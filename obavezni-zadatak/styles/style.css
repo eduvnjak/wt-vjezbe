@@ -1,0 +1,37 @@
+p:hover {
+    background-color: yellow;
+}
+
+p:nth-of-type(even) {
+    color: green;
+}
+
+p:nth-of-type(4n) {
+    text-decoration: underline;
+}
+
+img+p {
+    font-style: italic;
+}
+
+input[type=text] {
+    background-color: gray;
+}
+
+input[type=password] {
+    background-color: black;
+    color: gray;
+}
+
+input[type=password]+input {
+    color: blue;
+}
+
+body {
+    counter-reset: n;
+}
+
+p:before {
+    counter-increment: n;
+    content: "PARAGRAF " counter(n) " - ";
+}

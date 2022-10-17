@@ -1,0 +1,26 @@
+html {
+    background-color: yellow;
+}
+table, tr, td, th {
+    border-collapse: collapse;
+    border: 2px solid black;
+    padding: 10px 60px 10px 60px ;
+
+}
+th {
+    background-color: gray;
+}
+td, th {
+    text-align: center;
+}
+.predmet {
+    text-align: left;
+    padding-left: 10px;
+}
+table {
+    margin: 0 auto;
+}
+.bodovanje {
+    text-align: center;
+    margin: 0 auto;
+}
