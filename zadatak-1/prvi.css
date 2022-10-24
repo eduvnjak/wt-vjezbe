@@ -4,9 +4,11 @@
     border: 1px solid black;
     margin: 0 20%;
 }
-ul.moja_lista > li {   
+
+ul.moja_lista>li {
     list-style-image: url("http://www.w3schools.com/cssref/sqpurple.gif");
 }
+
 #link_nazad {
     display: table;
     margin: 0 auto;
@@ -15,26 +17,32 @@ ul.moja_lista > li {
     top: 20px;
     left: 20px;
 }
-#link_nazad > a {
+
+#link_nazad>a {
     text-decoration: none;
     color: red;
 }
-#link_nazad > a::before {
+
+#link_nazad>a::before {
     content: url("http://www.tizag.com/pics/cssT/listArrow.gif");
-} 
+}
+
 h1 {
     position: fixed;
     right: 5px;
     color: red;
     font-size: xx-large;
 }
+
 h2 {
     position: fixed;
     top: 32px;
     right: 5px;
     font-size: x-small;
 }
-h1, h2 {
+
+h1,
+h2 {
     margin: 0%;
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
