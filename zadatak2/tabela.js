@@ -1,25 +1,27 @@
-document.write("<table>");
+var string = ""
+string += "<table>";
 for (var i = 0; i < 11; i++) {
-    document.write("<tr>");
+    string += "<tr>"
     if (i == 0) {
         for (var j = 0; j < 11; j++) {
-            document.write("<th>");
+            string += "<th>";
             if (j == 0) {
-                document.write("X");
+                string += "X";
             } else {
-                document.write(j);
+                string += j;
             }
-            document.write("</th>");
+            string += "</th>";
         }
     } else {
         for (var j = 0; j < 11; j++) {
             if (j == 0) {
-                document.write("<th>" + i + "</th>");
+                string += `<th>${i}</th>`;
             } else {
-                document.write("<td>" + i * j + "</td>");
+                string += `<td>${i * j}</td>`;
             }
         }
     }
-    document.write("</tr>")
+    string += "</tr>";
 }
-document.write("</table>");
+string += "</table>";
+document.write(string);
