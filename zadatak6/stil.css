@@ -1,0 +1,7 @@
+.validan {
+    background-color: rgba(0, 255, 0, .15);
+}
+
+.nevalidan {
+    background-color: rgba(255, 0, 0, .15);
+}

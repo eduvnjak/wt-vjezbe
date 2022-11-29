@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+
+<HEAD>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <TITLE>Tutorijal 4, Zadatak 6</TITLE>
+    <link href="stil.css" rel="stylesheet">
+</HEAD>
+
+<BODY>
+    <div id="greska" style="color:red; font-weight:bold"></div>
+    <form name="mojaforma" id="mfid" action="http://google.com" method="GET">
+        <label>Ime: <input type="text" size=100 maxlength=100 id="ime" name="ime"> </label><br>
+        <label>Prezime: <input type="text" size=100 maxlength=100 id="prezime" name="prezime"> </label><br>
+        <label>Telefon: <input type="text" size=20 maxlength=20 id="telefon" name="telefon"></label><br>
+        <label>Email: <input type="text" size=100 maxlength=100 id="email" name="email"> </label><br>
+        <label>Password: <input type="password" id="password" name="password"></label><br>
+        <label>Potvrdi password: <input type="password" id="potvrdi_password"></label><br>
+        <label>Tip: <input type="text" disabled=true name="tip" value="Student"></label><br>
+        <label>Godina: <select name="godina">
+                <option value="1">Prva</option>
+                <option value="2" SELECTED>Druga</option>
+            </select><br></label>
+        <label><input type="checkbox" name="sretan" value="sretan" checked> Sretan?</label><br>
+        <input type="button" name="dummy" value="Obicni Button">
+        <input type="hidden" name="q" value="Web Tehnologije site:etf.unsa.ba">
+        <input type="submit" name="posalji" value="Posalji nacin 1">
+        <input type="button" name="stela" id="stela" value="Posalji preko stele">
+    </form>
+    <SCRIPT src="zadatak6.js"></SCRIPT>
+</BODY>
+
+</HTML>
