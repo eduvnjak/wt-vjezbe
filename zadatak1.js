@@ -1,6 +1,5 @@
 const http = require('http');
 const fs = require('fs');
-const { before } = require('node:test');
 
 http.createServer(function (req, res) {
     fs.readFile('imenik.txt', (err, data) => {
@@ -12,7 +11,7 @@ http.createServer(function (req, res) {
         const podaciCSV = data.toString('utf-8');
         var podaciJSON = "[";
         for (const line of podaciCSV.split('\r\n')) {
-            if(line == "") continue;
+            if (line == "") continue;
             podaciJSON += "{";
             const lineParts = line.split(',');
             podaciJSON += "\"ime\": \"";
