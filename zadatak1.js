@@ -9,34 +9,16 @@ http.createServer(function (req, res) {
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         const podaciCSV = data.toString('utf-8');
-        var podaciJSON = "[";
+        //napravi json objekat
+        var podaciJSON = [];
         for (const line of podaciCSV.split('\r\n')) {
             if (line == "") continue;
-            podaciJSON += "{";
             const lineParts = line.split(',');
-            podaciJSON += "\"ime\": \"";
-            podaciJSON += lineParts[0];
-            podaciJSON += "\",";
-
-            podaciJSON += "\"prezime\": \""
-            podaciJSON += lineParts[1];
-            podaciJSON += "\",";
-
-            podaciJSON += "\"adresa\": \"";
-            podaciJSON += lineParts[2];
-            podaciJSON += "\",";
-
-
-            podaciJSON += "\"broj_telefona\": \"";
-            podaciJSON += lineParts[3];
-            podaciJSON += "\""
-
-            podaciJSON += "},";
+            let objekat = { ime: lineParts[0], prezime: lineParts[1], adresa: lineParts[2], broj_telefona: lineParts[3] }
+            podaciJSON.push(objekat);
         }
-        podaciJSON = podaciJSON.slice(0, -1);
-        podaciJSON += "]"
 
-        res.end(podaciJSON);
+        res.end(JSON.stringify(podaciJSON));
     });
 
 }).listen(8080);
