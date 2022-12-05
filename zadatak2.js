@@ -22,37 +22,18 @@ const server = http.createServer(function (req, res) {
         const qParametar = urlParsiran.searchParams.get("q");
 
         const podaciCSV = data.toString('utf-8');
-        var podaciJSON = "[";
+        var podaciJSON = [];
         for (const line of podaciCSV.split('\r\n')) {
             if (line == "") continue;
             const lineParts = line.split(',');
 
             if (qParametar != null && lineParts[0].toLowerCase().indexOf(qParametar.toLowerCase()) == -1) continue;
-            podaciJSON += "{";
+            let objekat = { ime: lineParts[0], prezime: lineParts[1], adresa: lineParts[2], broj_telefona: lineParts[3] };
+            podaciJSON.push(objekat);
 
-            podaciJSON += "\"ime\": \"";
-            podaciJSON += lineParts[0];
-            podaciJSON += "\",";
-
-            podaciJSON += "\"prezime\": \""
-            podaciJSON += lineParts[1];
-            podaciJSON += "\",";
-
-            podaciJSON += "\"adresa\": \"";
-            podaciJSON += lineParts[2];
-            podaciJSON += "\",";
-
-
-            podaciJSON += "\"broj_telefona\": \"";
-            podaciJSON += lineParts[3];
-            podaciJSON += "\""
-
-            podaciJSON += "},";
         }
-        if (podaciJSON[podaciJSON.length - 1] == ",") podaciJSON = podaciJSON.slice(0, -1);
-        podaciJSON += "]"
 
-        res.end(podaciJSON);
+        res.end(JSON.stringify(podaciJSON));
     });
 });
 server.listen(port, hostname, () => {
