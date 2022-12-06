@@ -1,0 +1,22 @@
+{
+  "name": "wtv202218004",
+  "version": "1.0.0",
+  "description": "",
+  "main": "primjer1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://eduvnjak1@bitbucket.org/eduvnjak1/wtv202218004.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/eduvnjak1/wtv202218004/issues"
+  },
+  "homepage": "https://bitbucket.org/eduvnjak1/wtv202218004#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
