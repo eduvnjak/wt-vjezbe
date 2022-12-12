@@ -25,7 +25,8 @@ app.post('/', function (req, res) {
             }
             tabelaHtml += "</table>"
 
-            res.status(200).send(tabelaHtml);
+            res.set({ "Content-Type": "text/html" }); //cini se suvisno
+            res.send(tabelaHtml);
         });
     });
 });
