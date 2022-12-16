@@ -1,0 +1,15 @@
+html
+    head 
+    title Vježba 9 - Imenik
+    link(rel="stylesheet" type="text/css" href="/style.css")
+    body
+        table  
+            tr
+                th Ime i prezime
+                th Adresa
+                th Broj telefona
+            each red_tabele in podaci
+                tr
+                    td #{red_tabele['ime i prezime']}
+                    td #{red_tabele.adresa}
+                    td #{red_tabele['broj telefona']}
