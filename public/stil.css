@@ -1,0 +1,16 @@
+table,
+td,
+th {
+    border-collapse: collapse;
+    border-style: solid;
+    padding: 5px
+}
+
+form * {
+    margin: 3px;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
