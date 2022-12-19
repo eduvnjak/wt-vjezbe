@@ -43,3 +43,6 @@ function ucitajStranicu(stranica) {
     }
     ajax.send();
 }
+window.addEventListener('DOMContentLoaded', (event) => {
+    ucitajStranicu1();
+});

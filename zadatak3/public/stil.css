@@ -1,0 +1,15 @@
+#wrapper {
+    border: 1px solid;
+}
+#wrapper>div{
+    padding: 5px;
+}
+#wrapper p {
+    margin: 0;
+}
+#meni a:visited {
+    color: blue;
+}
+#meni {
+    border-bottom: 1px solid;
+}
