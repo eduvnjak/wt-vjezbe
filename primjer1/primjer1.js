@@ -40,6 +40,7 @@ app.post('/', function (req, res) {
         req.session.broj_pokusaja = broj_pokusaja;
         if (req.body['pokusaj'] == broj) {
             poruka = "Pogodili ste broj!";
+            req.session.broj = null;
         } else if (req.body['pokusaj'] > broj) {
             poruka = "Broj je manji!";
         } else if (req.body['pokusaj'] < broj) {
