@@ -20,14 +20,23 @@ app.set("views", path.join(__dirname, "views"));
 
 app.get('/imenik', function (req, res) {
     Imenik.findAll({ raw: true }).then((results) => {
-        console.log(results);
         res.render("tabela.pug", { "podaci": results });
     });
 });
-
+app.delete('/imenik/:id', function (req, res) {
+    Imenik.destroy({ where: { id: req.params.id } }).then((brojObrisanihRedova) => {
+        if (brojObrisanihRedova) {
+            res.json({ message: `Izbrisan kontakt sa id-em ${req.params.id}` });
+        } else {
+            res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.params.id}` });
+        }
+    }).catch((error) => {
+        res.status(500).json({ message: error });
+    });
+});
 app.get('/unos', function (req, res) {
     res.sendFile('public/forma.html', { root: __dirname });
-})
+});
 
 app.post('/unos', function (req, res) {
     Imenik.create({ ime: req.body.ime, prezime: req.body.prezime, adresa: req.body.adresa, brojTelefona: req.body.brojTelefona }).then((noviUnos) => {

@@ -2,6 +2,7 @@ html
     head 
     title Vježba 9 - Imenik
     link(rel="stylesheet" type="text/css" href="/stil.css")
+    script(src="tabela.js" defer) 
     body
         table  
             tr
@@ -9,9 +10,14 @@ html
                 th Prezime
                 th Adresa
                 th Broj telefona
+                th(colspan="2")
             each red_tabele in podaci
                 tr
                     td #{red_tabele.ime}
                     td #{red_tabele.prezime}
                     td #{red_tabele.adresa}
                     td #{red_tabele.brojTelefona}
+                    td 
+                        button Edit
+                    td 
+                        button(onclick=`deleteKontakt(${red_tabele.id})`) Delete
