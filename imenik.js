@@ -16,6 +16,8 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         datumDodavanja: Sequelize.DATE
+    }, {
+        freezeTableName: true
     });
     return Imenik;
 }

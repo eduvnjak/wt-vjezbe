@@ -7,6 +7,9 @@ const path = require("path");
 const app = express();
 const Imenik = require('./imenik.js')(sequelize);
 Imenik.sync();
+const Adresar = require('./adresar.js')(sequelize);
+Adresar.sync();
+
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -16,11 +19,8 @@ app.set("views", path.join(__dirname, "views"));
 
 
 app.get('/imenik', function (req, res) {
-    // connection.query('SELECT * FROM imenik', function (error, results, fields) {
-    //     if (error) throw error;
-    //     res.render("tabela.pug", { "podaci": results });
-    // });
-    Imenik.findAll().then((results) => {
+    Imenik.findAll({ raw: true }).then((results) => {
+        console.log(results);
         res.render("tabela.pug", { "podaci": results });
     });
 });
@@ -36,17 +36,20 @@ app.post('/unos', function (req, res) {
         // console.log(error.message);
         res.status(400).json({ message: error.message });
     })
-
-    // connection.query('INSERT INTO imenik (`ime i prezime`,adresa,`broj telefona`) VALUES (?,?,?)', [req.body.ime_prezime, req.body.adresa, req.body.broj_telefona], function (error, results, fields) {
-    //     if (error) throw error;
-    //     res.send("OK");
-    // });
 })
 
-// app.get('/poznanik/:kontakt', function (req, res) {
-//     connection.query('SELECT * FROM imenik WHERE id IN (SELECT idPoznanik FROM adresar WHERE idKontakt=?)', [req.params.kontakt], function (error, results, fields) {
-//         if (error) throw error;
-//         res.render("tabela.pug", { "podaci": results });
-//     });
-// })
+app.get('/poznanik/:kontakt', function (req, res) {
+    Adresar.findAll({ raw: true, where: { kontaktId: req.params.kontakt } }).then(
+        (poznanici) => {
+            const poznaniciId = poznanici.map((poznanik) => poznanik.poznanikId);
+            Imenik.findAll({ raw: true, where: { id: poznaniciId } }).then(
+                (results) => {
+                    res.render("tabela.pug", { "podaci": results });
+                }
+            )
+        }
+    ).catch((error) => {
+        res.json({ message: error.message });
+    })
+})
 app.listen(3000);
