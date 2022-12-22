@@ -6,7 +6,8 @@ posaljiDugme.addEventListener("click", () => {
     ajax.onreadystatechange = function () {
         if (ajax.readyState == 4 && ajax.status == 200) {
             // document.getElementById("status").innerHTML = "Red dodan u bazu";
-            alert("Red dodan u bazu");
+            alert("Kontakt dodan u bazu");
+            document.forms[0].reset();
         } else if (ajax.readyState == 4) {
             alert((JSON.parse(ajax.response)).message);
         }

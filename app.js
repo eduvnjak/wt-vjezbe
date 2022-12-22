@@ -35,7 +35,7 @@ app.delete('/imenik/:id', function (req, res) {
     });
 });
 app.get('/unos', function (req, res) {
-    res.sendFile('public/forma.html', { root: __dirname });
+    res.render("forma.pug");
 });
 
 app.post('/unos', function (req, res) {
@@ -61,4 +61,44 @@ app.get('/poznanik/:kontakt', function (req, res) {
         res.json({ message: error.message });
     })
 })
+
+app.get('/edit/:id', function (req, res) {
+    Imenik.findByPk(req.params.id).then(
+        (kontakt) => {
+            if (kontakt === null) {
+                res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.params.id}` });
+                return;
+            }
+            // const object = {
+            //     ime: kontakt.ime,
+            //     prezime: kontakt.prezime,
+            //     adresa: kontakt.adresa,
+            //     brojTelefona: kontakt.brojTelefona
+            // }
+            res.render("forma.pug", { "podaci": kontakt })
+        }
+    )
+})
+app.put('/edit', function (req, res) {
+    Imenik.findByPk(req.body.id).then(
+        (kontakt) => {
+            if (kontakt === null) {
+                res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.body.id}` });
+                return;
+            }
+            kontakt.set({
+                ime: req.body.ime,
+                prezime: req.body.prezime,
+                adresa: req.body.adresa,
+                brojTelefona: req.body.brojTelefona
+            })
+            kontakt.save().then(() => {
+                res.json({ message: `Uspješno izmijenjen korisnik sa id-em ${req.body.id}` });
+            }
+            ).catch((error) => {
+                res.status(400).json({ message: error.message });
+            })
+        }
+    )
+});
 app.listen(3000);

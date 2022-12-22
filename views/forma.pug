@@ -1,0 +1,28 @@
+html
+    head
+    if podaci
+        title Edit kontakta
+    else 
+        title Unos kontakta
+    link(rel="stylesheet" type="text/css" href="/stil.css")
+    if podaci
+        script(src="/edit.js" defer)
+    else 
+        script(src="/unos.js" defer)
+    body   
+        form
+            if podaci
+                input(type="hidden" name="id" value=podaci.id  )
+            label(for="ime") Ime: 
+            input(id="ime" type="text" name="ime" value= podaci ? podaci.ime : "")
+            br
+            label(for="prezime") Prezime: 
+            input(id="prezime" type="text" name="prezime" value= podaci ? podaci.prezime : "") 
+            br
+            label(for="ime") Adresa: 
+            input(id="adresa" type="text" name="adresa" value= podaci ? podaci.adresa : "") 
+            br
+            label(for="broj_telefona") Broj telefona: 
+            input(id="broj_telefona" type="text" name="broj_telefona" value= podaci ? podaci.brojTelefona : "") 
+            br
+            button(id="posalji" type="button") Pošalji

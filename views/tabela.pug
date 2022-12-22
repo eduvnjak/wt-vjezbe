@@ -1,6 +1,6 @@
 html
     head 
-    title Vježba 9 - Imenik
+    title Imenik
     link(rel="stylesheet" type="text/css" href="/stil.css")
     script(src="tabela.js" defer) 
     body
@@ -18,6 +18,6 @@ html
                     td #{red_tabele.adresa}
                     td #{red_tabele.brojTelefona}
                     td 
-                        button Edit
+                        button(onclick = `window.location.href="/edit/${red_tabele.id}"`) Edit
                     td 
                         button(onclick=`deleteKontakt(${red_tabele.id})`) Delete
