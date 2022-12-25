@@ -1,8 +1,8 @@
 html
     head 
-    title Imenik
-    link(rel="stylesheet" type="text/css" href="/stil.css")
-    script(src="tabela.js" defer) 
+        title Imenik
+        link(rel="stylesheet" type="text/css" href="/stil.css")
+        script(src="tabela.js" defer) 
     body
         table  
             tr
@@ -13,7 +13,7 @@ html
                 th(colspan="2")
             each red_tabele in podaci
                 tr
-                    td #{red_tabele.ime}
+                    td(onclick=`window.location.href="/poznanik/${red_tabele.id}"`) #{red_tabele.ime}
                     td #{red_tabele.prezime}
                     td #{red_tabele.adresa}
                     td #{red_tabele.brojTelefona}

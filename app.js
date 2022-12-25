@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const sequelize = require('./baza.js');
 const express = require("express");
 const path = require("path");
+const { Op } = require("sequelize");
 
 const app = express();
 const Imenik = require('./imenik.js')(sequelize);
@@ -39,7 +40,12 @@ app.get('/unos', function (req, res) {
 });
 
 app.post('/unos', function (req, res) {
-    Imenik.create({ ime: req.body.ime, prezime: req.body.prezime, adresa: req.body.adresa, brojTelefona: req.body.brojTelefona }).then((noviUnos) => {
+    Imenik.create({
+        ime: req.body.ime,
+        prezime: req.body.prezime,
+        adresa: req.body.adresa,
+        brojTelefona: req.body.brojTelefona
+    }).then((noviUnos) => {
         res.json({ message: "Uspješan unos u bazu", noviUnos: noviUnos });
     }).catch((error) => {
         // console.log(error.message);
@@ -52,8 +58,24 @@ app.get('/poznanik/:kontakt', function (req, res) {
         (poznanici) => {
             const poznaniciId = poznanici.map((poznanik) => poznanik.poznanikId);
             Imenik.findAll({ raw: true, where: { id: poznaniciId } }).then(
-                (results) => {
-                    res.render("tabela.pug", { "podaci": results });
+                (poznanici) => {
+                    poznaniciId.push(req.params.kontakt);
+                    //iznad mozda parseint
+                    Imenik.findAll({
+                        raw: true,
+                        where: {
+                            [Op.not]: {
+                                id: poznaniciId
+                            }
+                        }
+                    }).then((stranci) => {
+                        res.render("tabela_poznanici.pug", {
+                            "poznanici": poznanici,
+                            "stranci": stranci,
+                            "kontaktId": req.params.kontakt
+                        });
+                    })
+
                 }
             )
         }
@@ -69,12 +91,6 @@ app.get('/edit/:id', function (req, res) {
                 res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.params.id}` });
                 return;
             }
-            // const object = {
-            //     ime: kontakt.ime,
-            //     prezime: kontakt.prezime,
-            //     adresa: kontakt.adresa,
-            //     brojTelefona: kontakt.brojTelefona
-            // }
             res.render("forma.pug", { "podaci": kontakt })
         }
     )
@@ -101,4 +117,16 @@ app.put('/edit', function (req, res) {
         }
     )
 });
+app.put('/poznanik', function (req, res) {
+    Adresar.create({
+        kontaktId: req.body.kontaktId,
+        poznanikId: req.body.poznanikId
+    }).then((adresarRed) => {
+        res.json({ message: "Uspješan unos u bazu", noviUnos: adresarRed });
+    }).catch((error) => {
+        //ovo treba srediti
+        console.log(error);
+        res.status(400).json({ message: error.message });
+    })
+})
 app.listen(3000);

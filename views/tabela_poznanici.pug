@@ -1,0 +1,24 @@
+html
+    head 
+        title Poznanici
+        link(rel="stylesheet" type="text/css" href="/stil.css")
+        script(src="/tabela_poznanici.js" defer) 
+    body
+        table  
+            tr
+                th Ime
+                th Prezime
+                th Adresa
+                th Broj telefona
+            each poznanik in poznanici
+                tr
+                    td #{poznanik.ime}
+                    td #{poznanik.prezime}
+                    td #{poznanik.adresa}
+                    td #{poznanik.brojTelefona}
+        form 
+            input(type="hidden" name="kontaktId", value=kontaktId)
+            select#lista_stranaca(name="stranci")
+                each stranac in stranci 
+                    option(value=stranac.id)= `${stranac.ime}  ${stranac.prezime}`  
+            button#dodaj_poznanika(type="button") Dodaj poznanika
