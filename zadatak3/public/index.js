@@ -2,20 +2,12 @@ const stranica1 = document.getElementById("link_stranica_1");
 const stranica2 = document.getElementById("link_stranica_2");
 const stranica3 = document.getElementById("link_stranica_3");
 
-stranica1.addEventListener("click", ucitajStranicu1);
-stranica2.addEventListener("click", ucitajStranicu2);
-stranica3.addEventListener("click", ucitajStranicu3);
+stranica1.addEventListener("click", ucitajStranicuN(1));
+stranica2.addEventListener("click", ucitajStranicuN(2));
+stranica3.addEventListener("click", ucitajStranicuN(3));
 
-function ucitajStranicu1() {
-    ucitajStranicu(1);
-}
-
-function ucitajStranicu2() {
-    ucitajStranicu(2);
-}
-
-function ucitajStranicu3() {
-    ucitajStranicu(3);
+function ucitajStranicuN(N) {
+    return ucitajStranicu.bind(null, N);
 }
 function ucitajStranicu(stranica) {
     if (stranica < 1 || stranica > 3) return;
@@ -43,6 +35,6 @@ function ucitajStranicu(stranica) {
     }
     ajax.send();
 }
-window.addEventListener('DOMContentLoaded', (event) => {
-    ucitajStranicu1();
-});
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     ucitajStranicu(1);
+// });
