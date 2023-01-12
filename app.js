@@ -83,73 +83,70 @@ app.post('/unos', function (req, res) {
 //     })
 // })
 // refactor sa await
-app.get('/poznanik/:kontakt', async function (req, res) {
-    try {
-        let poznaniciId = await Adresar.findAll({
-            raw: true,
-            where: {
-                kontaktId: req.params.kontakt
-            }
-        })
-        poznaniciId = poznaniciId.map((poznanik) => poznanik.poznanikId);
-        let poznanici = await Imenik.findAll({
-            raw: true,
-            where: { id: poznaniciId }
-        })
-        //iznad mozda parseint
-        let stranci = await Imenik.findAll({
-            raw: true,
-            where: {
-                [Op.not]: {
-                    id: poznaniciId.concat(req.params.kontakt)
-                }
-            }
-        })
-        res.render("tabela_poznanici.pug", {
-            "poznanici": poznanici,
-            "stranci": stranci,
-            "kontaktId": req.params.kontakt
-        });
-    } catch (error) {
-        res.json({ message: error.message });
-    }
-})
-
-// refactor sa promiseima
-// app.get('/poznanik/:kontakt', function (req, res) {
-//     Adresar.findAll({ raw: true, where: { kontaktId: req.params.kontakt } })
-//         .then((poznanici) => {
-//             const poznaniciId = poznanici.map((poznanik) => poznanik.poznanikId);
-//             //trebal ovdje return
-//             return Imenik.findAll({
-//                 raw: true,
-//                 where: {
-//                     id: poznaniciId
+// app.get('/poznanik/:kontakt', async function (req, res) {
+//     try {
+//         let poznaniciId = await Adresar.findAll({
+//             raw: true,
+//             where: {
+//                 kontaktId: req.params.kontakt
+//             }
+//         })
+//         poznaniciId = poznaniciId.map((poznanik) => poznanik.poznanikId);
+//         let poznanici = await Imenik.findAll({
+//             raw: true,
+//             where: { id: poznaniciId }
+//         })
+//         //iznad mozda parseint
+//         let stranci = await Imenik.findAll({
+//             raw: true,
+//             where: {
+//                 [Op.not]: {
+//                     id: poznaniciId.concat(req.params.kontakt)
 //                 }
-//             })
+//             }
 //         })
-//         .then((poznanici, poznaniciId) => {
-//             poznaniciId.push(req.params.kontakt);
-//             //iznad mozda parseint
-//             return Imenik.findAll({
-//                 raw: true,
-//                 where: {
-//                     [Op.not]: {
-//                         id: poznaniciId
-//                     }
-//                 }
-//             })
-//         })
-//         .then((poznanici, stranci) => {
-//             res.render("tabela_poznanici.pug", {
-//                 "poznanici": poznanici,
-//                 "stranci": stranci,
-//                 "kontaktId": req.params.kontakt
-//             });
-//         }).catch((error) => {
-//             res.json({ message: error.message });
-//         })
+//         res.render("tabela_poznanici.pug", {
+//             "poznanici": poznanici,
+//             "stranci": stranci,
+//             "kontaktId": req.params.kontakt
+//         });
+//     } catch (error) {
+//         res.json({ message: error.message });
+//     }
 // })
+// refactor sa promiseima ljepse
+app.get('/poznanik/:kontakt', function (req, res) {
+    Adresar.findAll({ raw: true, where: { kontaktId: req.params.kontakt } })
+        .then((poznaniciId) => {
+            poznaniciId = poznaniciId.map((poznanik) => poznanik.poznanikId);
+            //trebal ovdje return
+            return Imenik.findAll({
+                raw: true,
+                where: {
+                    id: poznaniciId
+                }
+            }).then(poznanici => [poznaniciId, poznanici])
+        })
+        .then(([poznaniciId, poznanici]) => {
+            return Imenik.findAll({
+                raw: true,
+                where: {
+                    [Op.not]: {
+                        id: poznaniciId.concat(req.params.kontakt)
+                    }
+                }
+            }).then(stranci => [poznanici, stranci])
+        })
+        .then(([poznanici, stranci]) => {
+            res.render("tabela_poznanici.pug", {
+                "poznanici": poznanici,
+                "stranci": stranci,
+                "kontaktId": req.params.kontakt
+            });
+        }).catch((error) => {
+            res.json({ message: error.message });
+        })
+})
 app.get('/edit/:id', function (req, res) {
     Imenik.findByPk(req.params.id).then(
         (kontakt) => {
@@ -163,48 +160,50 @@ app.get('/edit/:id', function (req, res) {
 })
 // original
 // mozda pametnije da edit ima route parametar a da su atributi u tijelu zahtjeva
-// app.put('/edit', function (req, res) {
-//     Imenik.findByPk(req.body.id).then(
-//         (kontakt) => {
-//             if (kontakt === null) {
-//                 res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.body.id}` });
-//                 return;
-//             }
-//             kontakt.set({
-//                 ime: req.body.ime,
-//                 prezime: req.body.prezime,
-//                 adresa: req.body.adresa,
-//                 brojTelefona: req.body.brojTelefona
-//             })
-//             kontakt.save().then(() => {
-//                 res.json({ message: `Uspješno izmijenjen korisnik sa id-em ${req.body.id}` });
-//             }
-//             ).catch((error) => {
-//                 res.status(400).json({ message: error.message });
-//             })
-//         }
-//     )
-// });
-// refactor sa await
-app.put('/edit', async function (req, res) {
-    try {
-        let kontakt = await Imenik.findByPk(req.body.id);
-        if (kontakt === null) {
-            res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.body.id}` });
-            return;
-        }
-        kontakt.set({
-            ime: req.body.ime,
-            prezime: req.body.prezime,
-            adresa: req.body.adresa,
-            brojTelefona: req.body.brojTelefona
-        });
-        await kontakt.save();
-        res.json({ message: `Uspješno izmijenjen korisnik sa id-em ${req.body.id}` });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+app.put('/edit', function (req, res) {
+    Imenik.findByPk(req.body.id).then(
+        (kontakt) => {
+            if (kontakt === null) {
+                res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.body.id}` });
+                return;
+            }
+            console.log(kontakt.get());
+            kontakt.set({
+                ime: req.body.ime,
+                prezime: req.body.prezime,
+                adresa: req.body.adresa,
+                brojTelefona: req.body.brojTelefona
+            });
+            return kontakt.save();
+        }).then(
+            (kontakt) => {
+                console.log(kontakt.get());
+                res.json({ message: `Uspješno izmijenjen korisnik sa id-em ${kontakt.id}` });
+            }
+        ).catch((error) => {
+            res.status(400).json({ message: error.message });
+        })
 });
+// refactor sa await
+// app.put('/edit', async function (req, res) {
+//     try {
+//         let kontakt = await Imenik.findByPk(req.body.id);
+//         if (kontakt === null) {
+//             res.status(404).json({ message: `Ne postoji korisnik sa id-em ${req.body.id}` });
+//             return;
+//         }
+//         kontakt.set({
+//             ime: req.body.ime,
+//             prezime: req.body.prezime,
+//             adresa: req.body.adresa,
+//             brojTelefona: req.body.brojTelefona
+//         });
+//         await kontakt.save();
+//         res.json({ message: `Uspješno izmijenjen korisnik sa id-em ${req.body.id}` });
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// });
 app.put('/poznanik', function (req, res) {
     Adresar.create({
         kontaktId: req.body.kontaktId,
